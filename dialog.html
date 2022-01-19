@@ -1,0 +1,74 @@
+<html>
+<head>
+ <style>
+	/*遮罩层，z-index必须比dialog-wrapper小,各层opacity属性会相乘*/
+ 	.dialog-mask {opacity:0.5;z-index:1000;background-color:#000; display:block; position:fixed; inset:0px;}
+	/*对话框容器，设置为position:fixed让其他相对定位的元素有参照*/
+	.dialog-wrapper {z-index:1024;display:block; position:fixed; inset:0px;}
+	
+	.modal-dialog {margin:70px auto; background-color:#ffffff; width:1200px;  border-radius:10px 10px 10px 10px;}
+	.modal-dialog .dialog-header {background-color:rgb(21,67,100); position:relative; border-radius:10px 10px 0px 0px; }
+	.modal-dialog .dialog-header .x  {position:absolute; right:15px; margin:10px 0px;}
+	.modal-dialog .dialog-header .title {text-align:center; padding:10px 0px;}
+	.modal-dialog .dialog-body {padding:20px;}
+	.modal-dialog .dialog-footer {text-align:center; }
+	.modal-dialog .dialog-footer button {margin:5px auto;}
+</style>
+
+<script type='text/javascript'>
+	function Dialog() {
+	}
+	
+	Dialog.prototype = {
+		constructor:Dialog,
+		close: function(){
+		  var dlgRef = document.getElementById('dlg1');
+		  dlgRef.style.display='none';
+		  Array.from(document.getElementsByClassName("dialog-mask")).forEach(e=>{
+			e.style.display='none';
+		  })
+		  Array.from(document.getElementsByClassName("dialog-wrapper")).forEach(e=>{
+			e.style.display='none';
+		  })
+		},
+		show: function() {
+			var dlgRef = document.getElementById('dlg1');
+			dlgRef.style.display='block';
+			//document.getElementsByClassName 返回的是htmlCollection
+			Array.from(document.getElementsByClassName("dialog-mask")).forEach(e=>{
+				e.style.display='block';
+			})
+			Array.from(document.getElementsByClassName("dialog-wrapper")).forEach(e=>{
+				e.style.display='block';
+			})
+		}
+	}
+	window.dialog = new Dialog();
+</script>
+</head>
+<body>
+
+<button onclick='dialog.close()'>hidde</button> <button onclick='dialog.show()'>show</button>
+
+<div class='dialog-mask'>
+</div>
+<div class='dialog-wrapper'>
+<div id="dlg1" class='modal-dialog'>
+		<div class='dialog-header'>
+			<!--按钮必须要在title前面，不然会float到另一行-->
+			<button class='_close x' onclick='dialog.close()'>X</button>
+			<div class='title'>title</div>
+		</div>
+		<div class='dialog-body'>
+		<div>11111111111111111111111</div>
+		<div>2222222222222222222222222</div>
+		<div>3333333333333333333333333</div>
+		</div>
+		<div class='dialog-footer'>
+			<button class='_close' onclick='dialog.close()'>close</button>
+		</div>
+</div>
+</div>
+</div>
+</body>
+</html>
